@@ -1,5 +1,10 @@
 #!/sbin/runscript
-# $Header: $
+# Facts about this script:
+# This was written over the course of 10 minutes (in fact, I spent more time writing these few lines)
+# It requires you to blacklist all gpu drivers in the modprobe config to prevent autoload
+# It will probably not work for you without modification (If you have a ThinkPad X220 it just might)
+# I can and will take NO responsibility for any damage this may cause
+# I will take full responsibility for anything awesome this may cause ;)
 
 depend() {
 	before xdm
