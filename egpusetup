@@ -1,0 +1,28 @@
+#!/sbin/runscript
+# $Header: $
+
+depend() {
+	before xdm
+}
+
+start() {
+	/usr/sbin/lspci | grep -i nvidia &> /dev/null
+	if [ $? -eq 0 ]; then
+		echo 1 > /sys/bus/pci/devices/0000:00:02.0/remove
+		/sbin/modprobe nvidia
+		/usr/bin/eselect opengl set nvidia
+		/bin/cp /root/00-nvidia.conf /usr/share/X11/xorg.conf.d/
+	else
+		if [ -e /usr/share/X11/xorg.conf.d/00-nvidia.conf ]; then
+			/bin/rm /usr/share/X11/xorg.conf.d/00-nvidia.conf
+		fi
+		/sbin/modprobe i915
+		/usr/bin/eselect opengl set xorg-x11
+	fi
+}
+
+stop() {
+	if [ -e /usr/share/X11/xorg.conf.d/00-nvidia.conf ]; then
+		/bin/rm /usr/share/X11/xorg.conf.d/00-nvidia.conf
+	fi
+}
